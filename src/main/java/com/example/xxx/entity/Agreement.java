@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Agreement {
@@ -16,19 +16,15 @@ public class Agreement {
 
     private String name;
 
-    private Boolean decision;
+    @OneToMany(mappedBy = "agreement")
+    private List<PersonAgreement> personAgreements;
 
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person;
-
-    protected Agreement() {
+    public Agreement() {
 
     }
 
-    public Agreement(Long id, Boolean decision) {
+    public Agreement(Long id) {
         this.id = id;
-        this.decision = decision;
     }
 
     public Long getId() {
@@ -39,11 +35,11 @@ public class Agreement {
         return name;
     }
 
-    public Person getPerson() {
-        return person;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Boolean getDecision() {
-        return decision;
+    public List<PersonAgreement> getPersonAgreements() {
+        return personAgreements;
     }
 }

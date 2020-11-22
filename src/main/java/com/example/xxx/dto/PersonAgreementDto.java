@@ -8,19 +8,17 @@ public class PersonAgreementDto {
     public PersonAgreementDto() {
     }
 
-    public Long getAgreementId() {
-        return agreementId;
+    public PersonAgreementDto(Long agreementId, Boolean decision) {
+        this.agreementId = agreementId;
+        this.decision = decision;
     }
 
-    public void setAgreementId(Long agreementId) {
-        this.agreementId = agreementId;
+    public Long getAgreementId() {
+        return agreementId;
     }
 
     public Boolean getDecision() {
         return decision;
     }
 
-    public void setDecision(Boolean decision) {
-        this.decision = decision;
-    }
 }

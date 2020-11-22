@@ -2,12 +2,14 @@ package com.example.xxx.entity;
 
 import com.example.xxx.dto.PersonAgreementDto;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Person {
@@ -18,8 +20,8 @@ public class Person {
 
     private String firstName;
 
-    @OneToMany(mappedBy = "person")
-    private List<Agreement> agreements;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    private List<PersonAgreement> personAgreements;
 
     protected Person() {
 
@@ -37,11 +39,14 @@ public class Person {
         return firstName;
     }
 
-    public List<Agreement> getAgreements() {
-        return agreements;
+    public void addAgreement(PersonAgreementDto personAgreementDto) {
+        PersonAgreement personAgreement = new PersonAgreement(this, personAgreementDto.getAgreementId(), personAgreementDto.getDecision());
+        personAgreements.add(personAgreement);
     }
 
-    public void addAgreement(PersonAgreementDto personAgreementDto) {
-        agreements.add(new Agreement(personAgreementDto.getAgreementId(), personAgreementDto.getDecision()));
+    public List<PersonAgreementDto> getPersonAgreements() {
+        return personAgreements.stream()
+                               .map(personAgreement -> new PersonAgreementDto(personAgreement.getAgreement().getId(), personAgreement.getDecision()))
+                               .collect(Collectors.toList());
     }
 }
